@@ -9,19 +9,19 @@ import redis.clients.jedis.Jedis
 class RedisBackedCacheTest {
 
   companion object {
-    val redisContainer = GenericContainer<Nothing>("redis:3-alpine")
-      .apply { withExposedPorts(6379) }
 
-    init {
-      redisContainer.start()
-    }
+    val redisContainer = GenericContainer<Nothing>("redis:3-alpine")
+      .apply {
+        withExposedPorts(6379)
+        start()
+      }
   }
 
   private lateinit var cache: Cache
 
   @BeforeEach
   fun setUp() {
-    val jedis = Jedis(redisContainer.getHost(), redisContainer.getMappedPort(6379))
+    val jedis = Jedis(redisContainer.host, redisContainer.getMappedPort(6379))
     cache = RedisBackedCache(jedis, "test")
     println(cache)
   }
@@ -31,7 +31,7 @@ class RedisBackedCacheTest {
     cache.put("foo", "FOO")
     val foundObject: String? = cache.get("foo", String::class.java)
     assertThat(foundObject)
-      .isNotNull()
+      .isNotNull
       .isEqualTo("FOO")
   }
 
