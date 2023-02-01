@@ -1,0 +1,80 @@
+# helmDefaults:
+#  force: true
+#  cleanupOnFail: true
+#  recreatePods: true
+
+releases:
+
+  - name: logstash
+    chart: elastic/logstash
+    labels:
+      tier: elk
+    values:
+      - logstashPipeline:
+          logstash.conf: |
+            input { 
+              beats { port => 5044 } 
+            }
+            output { 
+              elasticsearch { 
+                hosts => ["http://elasticsearch-master:9200"]
+                index => "logstash"
+              } 
+            }
+        service:
+          annotations: {}
+          type: ClusterIP
+          loadBalancerIP: ""
+          ports:
+            - name: beats
+              port: 5044
+              protocol: TCP
+              targetPort: 5044
+            - name: http
+              port: 8080
+              protocol: TCP
+              targetPort: 8080
+
+  - name: filebeat
+    chart: elastic/filebeat
+    labels:
+      tier: elk
+    values:
+      - filebeatConfig:
+          filebeat.yml: |
+            filebeat.inputs:
+            - type: container
+              paths:
+                - /var/log/containers/*.log
+              processors:
+              - add_kubernetes_metadata: 
+                  host: ${NODE_NAME}
+                  matchers:
+                  - logs_path:
+                      logs_path: "/var/log/containers/"
+            output.logstash:
+              hosts: ["logstash-logstash:5044"]
+
+  - name: elasticsearch
+    chart: elastic/elasticsearch
+    labels:
+      tier: elk
+    values:
+      - resources: 
+          requests: {}
+        antiAffinity: "soft"
+        # Request smaller persistent volumes.
+        volumeClaimTemplate:
+          accessModes: [ "ReadWriteOnce" ]
+          # storageClassName: "local-path"
+          resources:
+            requests:
+              storage: 100M
+
+  - name: kibana
+    chart: elastic/kibana
+    labels:
+      tier: elk
+    values:
+      - ingress: 
+          enabled: false

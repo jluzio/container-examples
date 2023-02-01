@@ -1,0 +1,13 @@
+# helmDefaults:
+#  force: true
+#  cleanupOnFail: true
+#  recreatePods: true
+
+releases:
+  # Infrastructure
+  - name: tomcat
+    chart: bitnami/tomcat
+    labels:
+      tier: examples
+    values:
+      - tomcatPassword: user

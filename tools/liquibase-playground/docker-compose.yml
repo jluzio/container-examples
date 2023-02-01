@@ -1,0 +1,19 @@
+# https://hub.docker.com/r/liquibase/liquibase
+# https://hub.docker.com/r/webdevops/liquibase
+
+services:
+  liquibase:
+#    image: liquibase/liquibase
+    image: webdevops/liquibase:mysql
+    container_name: liquibase
+    environment:
+      LIQUIBASE_URL: jdbc:mysql://host.docker.internal:3306/docker_test?createDatabaseIfNotExist=true&useSSL=false
+      LIQUIBASE_USERNAME: root
+      LIQUIBASE_PASSWORD: root
+#      LIQUIBASE_DRIVER: com.mysql.jdbc.Driver
+      LIQUIBASE_CHANGELOG: /liquibase/db/changelog/changelog.yaml
+#      LIQUIBASE_CLASSPATH: /usr/share/java/mariadb-java-client.jar:/liquibase
+    command: update
+#    command: clearCheckSums
+    volumes:
+      - ./target/generated-resources:/liquibase
