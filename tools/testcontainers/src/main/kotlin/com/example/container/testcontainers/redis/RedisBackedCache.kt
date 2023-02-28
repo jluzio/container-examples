@@ -2,7 +2,6 @@ package com.example.container.testcontainers.redis
 
 import com.google.gson.Gson
 import redis.clients.jedis.Jedis
-import java.util.*
 
 /**
  * An implementation of [Cache] that stores data in Redis.
