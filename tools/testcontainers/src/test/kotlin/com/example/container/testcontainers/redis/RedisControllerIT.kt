@@ -22,7 +22,7 @@ import org.testcontainers.containers.GenericContainer
 class RedisControllerIT {
 
   companion object {
-    val redisContainer = GenericContainer<Nothing>("redis:3-alpine")
+    val redisContainer = GenericContainer<Nothing>("redis:7-alpine")
       .apply { withExposedPorts(6379) }
   }
 

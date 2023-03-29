@@ -16,7 +16,7 @@ import redis.clients.jedis.Jedis
 class RedisBackedCacheSpringBootTest {
 
   companion object {
-    val redisContainer = GenericContainer<Nothing>("redis:3-alpine")
+    val redisContainer = GenericContainer<Nothing>("redis:7-alpine")
       .apply { withExposedPorts(6379) }
   }
 
