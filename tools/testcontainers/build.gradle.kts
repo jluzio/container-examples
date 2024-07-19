@@ -1,14 +1,14 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "3.0.5"
-	id("io.spring.dependency-management") version "1.1.0"
-	kotlin("jvm") version "1.8.10"
-	kotlin("plugin.spring") version "1.8.10"
+	id("org.springframework.boot") version "3.3.2"
+	id("io.spring.dependency-management") version "1.1.6"
+	kotlin("jvm") version "1.9.22"
+	kotlin("plugin.spring") version "1.9.22"
 
 	// Lombok
 	id("io.freefair.lombok") version "8.0.1"
-	kotlin("plugin.lombok") version "1.8.10"
+	kotlin("plugin.lombok") version "1.9.22"
 }
 
 group = "com.example.container"
@@ -25,7 +25,7 @@ repositories {
 	mavenCentral()
 }
 
-extra["testcontainersVersion"] = "1.17.6"
+extra["testcontainersVersion"] = "1.20.0"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
